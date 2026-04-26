@@ -80,38 +80,38 @@ export const ProductSection = ({ products, cart, onAddToCart, onRemoveFromCart }
                     </div>
                   )}
                 </div>
-                <div className="p-4 flex flex-col flex-1">
-                  <h3 className="font-bold text-lg text-foreground leading-tight mb-2">
+                <div className="p-2 sm:p-4 flex flex-col flex-1">
+                  <h3 className="font-bold text-sm sm:text-lg text-foreground leading-tight mb-1.5 sm:mb-2">
                     {p.name || 'অজানা পণ্য'}
                   </h3>
                   
-                  <div className="mb-3">
-                    <span className="inline-block bg-red-50 text-red-600 text-xs font-medium px-2 py-0.5 rounded">
+                  <div className="mb-2 sm:mb-3">
+                    <span className="inline-block bg-red-50 text-red-600 text-[10px] sm:text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded">
                       {p.size || '-'}
                     </span>
                   </div>
 
                   {p.details && (
-                    <p className="text-[15px] text-muted-foreground mb-4 whitespace-pre-line leading-relaxed flex-1">
+                    <p className="text-xs sm:text-[15px] text-muted-foreground mb-3 sm:mb-4 whitespace-pre-line leading-relaxed flex-1">
                       {p.details}
                     </p>
                   )}
 
-                  <div className="flex items-center gap-2 mt-auto">
+                  <div className="flex items-center gap-1.5 sm:gap-2 mt-auto">
                     <Input
                       type="number"
                       min="1"
                       placeholder={p.unit || 'ব্যাগ'}
                       value={quantities[p.id] || ""}
                       onChange={(e) => setQuantities((prev) => ({ ...prev, [p.id]: e.target.value }))}
-                      className="w-20 h-10 text-sm px-2 text-center shadow-sm"
+                      className="w-14 sm:w-20 h-8 sm:h-10 text-xs sm:text-sm px-1 sm:px-2 text-center shadow-sm"
                     />
                     <Button 
                       onClick={() => handleAddToCart(p)} 
-                      className="flex-1 h-10 text-[15px] font-semibold text-white shadow-sm"
+                      className="flex-1 h-8 sm:h-10 text-xs sm:text-[15px] font-semibold text-white shadow-sm px-2"
                       style={{ backgroundColor: '#f93333' }}
                     >
-                      <Plus className="w-4 h-4 mr-1" /> যোগ
+                      <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-0.5 sm:mr-1 flex-shrink-0" /> <span className="truncate">যোগ</span>
                     </Button>
                   </div>
                   <AnimatePresence>
@@ -120,10 +120,10 @@ export const ProductSection = ({ products, cart, onAddToCart, onRemoveFromCart }
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="mt-3 flex items-center justify-between bg-primary/5 rounded px-3 py-2 text-sm overflow-hidden"
+                        className="mt-2 sm:mt-3 flex items-center justify-between bg-primary/5 rounded px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-sm overflow-hidden"
                       >
-                        <span className="text-primary font-bold">কার্টে: {inCart.quantity} {p.unit}</span>
-                        <button onClick={() => onRemoveFromCart(p.id)} className="text-destructive hover:underline font-medium">বাদ দিন</button>
+                        <span className="text-primary font-bold truncate pr-1">কার্টে: {inCart.quantity} {p.unit}</span>
+                        <button onClick={() => onRemoveFromCart(p.id)} className="text-destructive hover:underline font-medium flex-shrink-0">বাদ দিন</button>
                       </motion.div>
                     )}
                   </AnimatePresence>
