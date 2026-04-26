@@ -72,7 +72,8 @@ const Index = () => {
         // 1. Fetch Products
         const { data: productsData, error: productsError } = await supabase
           .from('products')
-          .select('*');
+          .select('*')
+          .order('created_at', { ascending: true });
         
         if (!productsError && productsData && productsData.length > 0) {
           setProducts((productsData as DatabaseProduct[]).map((p) => ({

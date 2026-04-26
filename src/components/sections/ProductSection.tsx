@@ -80,36 +80,38 @@ export const ProductSection = ({ products, cart, onAddToCart, onRemoveFromCart }
                     </div>
                   )}
                 </div>
-                <div className="p-3 flex flex-col flex-1">
-                  <h3 className="font-semibold text-sm text-foreground leading-tight mb-1 min-h-[2.4em] line-clamp-2">
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="font-bold text-lg text-foreground leading-tight mb-2">
                     {p.name || 'অজানা পণ্য'}
                   </h3>
-                  <div className="flex flex-wrap items-center gap-1 mt-auto mb-2">
-                    <span className="inline-block bg-primary/10 text-primary text-[10px] font-medium px-1.5 py-0.5 rounded">
+                  
+                  <div className="mb-3">
+                    <span className="inline-block bg-red-50 text-red-600 text-xs font-medium px-2 py-0.5 rounded">
                       {p.size || '-'}
                     </span>
-                    {p.sku && (
-                      <span className="inline-block bg-muted text-muted-foreground border text-[10px] font-medium px-1.5 py-0.5 rounded">
-                        SKU: {p.sku}
-                      </span>
-                    )}
                   </div>
+
                   {p.details && (
-                    <p className="text-[11px] text-muted-foreground mb-3 whitespace-pre-line leading-snug line-clamp-2">
-                      {p.details.split('\n').filter(line => !line.includes('আইডি নম্বর') && !line.includes('ওজন')).join('\n') || p.details.split('\n')[0]}
+                    <p className="text-[15px] text-muted-foreground mb-4 whitespace-pre-line leading-relaxed flex-1">
+                      {p.details}
                     </p>
                   )}
-                  <div className="flex items-center gap-1.5 mt-auto">
+
+                  <div className="flex items-center gap-2 mt-auto">
                     <Input
                       type="number"
                       min="1"
-                      placeholder={p.unit || 'pcs'}
+                      placeholder={p.unit || 'ব্যাগ'}
                       value={quantities[p.id] || ""}
                       onChange={(e) => setQuantities((prev) => ({ ...prev, [p.id]: e.target.value }))}
-                      className="w-14 h-8 text-xs px-2"
+                      className="w-20 h-10 text-sm px-2 text-center shadow-sm"
                     />
-                    <Button size="sm" onClick={() => handleAddToCart(p)} className="flex-1 h-8 text-xs px-2 font-bold">
-                      <Plus className="w-3 h-3 mr-0.5" /> যোগ
+                    <Button 
+                      onClick={() => handleAddToCart(p)} 
+                      className="flex-1 h-10 text-[15px] font-semibold text-white shadow-sm"
+                      style={{ backgroundColor: '#f93333' }}
+                    >
+                      <Plus className="w-4 h-4 mr-1" /> যোগ
                     </Button>
                   </div>
                   <AnimatePresence>
@@ -118,7 +120,7 @@ export const ProductSection = ({ products, cart, onAddToCart, onRemoveFromCart }
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="mt-2 flex items-center justify-between bg-primary/5 rounded px-2 py-1 text-[11px] overflow-hidden"
+                        className="mt-3 flex items-center justify-between bg-primary/5 rounded px-3 py-2 text-sm overflow-hidden"
                       >
                         <span className="text-primary font-bold">কার্টে: {inCart.quantity} {p.unit}</span>
                         <button onClick={() => onRemoveFromCart(p.id)} className="text-destructive hover:underline font-medium">বাদ দিন</button>
