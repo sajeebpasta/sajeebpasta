@@ -37,9 +37,9 @@ export const CartSummary = ({ cart, onRemoveFromCart }: CartSummaryProps) => {
                   className="flex items-center justify-between border-b pb-2"
                 >
                   <span className="text-foreground">{c.product.name} ({c.product.size})</span>
-                <div className="flex items-center gap-3">
-                  <span className="font-medium text-foreground">x {c.quantity} {c.product.unit}</span>
-                  <button onClick={() => onRemoveFromCart(String(c.product.id))} className="text-destructive text-sm hover:underline">বাদ দিন</button>
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  <span className="font-medium text-foreground whitespace-nowrap">x {c.quantity} {c.product.unit}</span>
+                  <button onClick={() => onRemoveFromCart(String(c.product.id))} className="text-destructive text-sm hover:underline whitespace-nowrap">বাদ দিন</button>
                 </div>
                 </motion.div>
               );

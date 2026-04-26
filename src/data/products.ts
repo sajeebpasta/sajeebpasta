@@ -26,4 +26,9 @@ export const allProducts: Product[] = [
   { id: 35, name: "কুক নুডলস বাল্ক (কার্টুন)", sku: "886", size: "15kg", details: "আইডি নম্বর: ৮৮৬\nব্যাগের ওজন: ১৫ কেজি", image: cookNoodles886Img, unit: "ব্যাগ" },
   { id: 36, name: "ম্যাকারনি অ্যাসর্টেড", sku: "1306", size: "30kg", details: "আইডি নম্বর: ১৩০৬\nব্যাগের ওজন: ৩০ কেজি", image: macaroniAssortedImg, unit: "ব্যাগ" },
   { id: 37, name: "ম্যাকারনী স্ক্রু", sku: "1302", size: "15kg", details: "আইডি নম্বর: ১৩০২\nব্যাগের ওজন: ১৫ কেজি", image: macaroniScrewImg, unit: "ব্যাগ" },
+  { id: 38, name: "পেনে পাস্তা বাল্ক", sku: "1307", size: "20kg", details: "আইডি নম্বর: ১৩০৭\nব্যাগের ওজন: ২০ কেজি", image: penneImg, unit: "ব্যাগ" },
+  { id: 39, name: "স্প্যাগেটি বাল্ক", sku: "1308", size: "25kg", details: "আইডি নম্বর: ১৩০৮\nব্যাগের ওজন: ২৫ কেজি", image: spaghettiImg, unit: "ব্যাগ" },
+  { id: 40, name: "ফুসিলি পাস্তা", sku: "1309", size: "30kg", details: "আইডি নম্বর: ১৩০৯\nব্যাগের ওজন: ৩০ কেজি", image: fusilliImg, unit: "ব্যাগ" },
+  { id: 41, name: "ফারফাল্লে পাস্তা", sku: "1310", size: "20kg", details: "আইডি নম্বর: ১৩১০\nব্যাগের ওজন: ২০ কেজি", image: farfalleImg, unit: "ব্যাগ" },
+  { id: 42, name: "শেল পাস্তা", sku: "1311", size: "25kg", details: "আইডি নম্বর: ১৩১১\nব্যাগের ওজন: ২৫ কেজি", image: shellImg, unit: "ব্যাগ" },
 ];
