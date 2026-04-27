@@ -69,7 +69,7 @@ const Dashboard = () => {
 
   const statCards = [
     { title: "Total Products", value: stats.products, icon: Package, color: "text-blue-600", bg: "bg-blue-100" },
-    { title: "Total Quotations", value: stats.quotations, icon: ClipboardList, color: "text-green-600", bg: "bg-green-100" },
+    { title: "Total Orders", value: stats.quotations, icon: ClipboardList, color: "text-green-600", bg: "bg-green-100" },
     { title: "Pending Inquiries", value: stats.pendingQuotations, icon: TrendingUp, color: "text-orange-600", bg: "bg-orange-100" },
     { title: "Total Customers", value: stats.totalCustomers, icon: Users, color: "text-purple-600", bg: "bg-purple-100" },
   ];
