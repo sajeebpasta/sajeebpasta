@@ -13,7 +13,7 @@ export const CartSummary = ({ cart, onRemoveFromCart }: CartSummaryProps) => {
   if (cart.length === 0) return null;
 
   return (
-    <section className="px-4 max-w-6xl mx-auto mb-10">
+    <section id="cart" className="px-4 max-w-6xl mx-auto mb-10 scroll-mt-24">
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

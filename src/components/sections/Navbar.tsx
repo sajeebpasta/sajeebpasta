@@ -106,7 +106,8 @@ export const Navbar = ({ cartCount }: NavbarProps) => {
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.5 }}
-              className="flex items-center gap-2 bg-white/20 text-white rounded-full px-3 py-1 text-xs font-semibold"
+              className="flex items-center gap-2 bg-white/20 text-white rounded-full px-3 py-1 text-xs font-semibold cursor-pointer hover:bg-white/30 transition-colors"
+              onClick={() => document.getElementById("cart")?.scrollIntoView({ behavior: "smooth" })}
             >
               <ShoppingCart className="w-3.5 h-3.5" /> {cartCount}
             </motion.div>
