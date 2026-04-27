@@ -98,43 +98,7 @@ const Dashboard = () => {
           ))}
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <Card className="col-span-1">
-            <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {stats.recentQuotations.length > 0 ? (
-                  stats.recentQuotations.map((q, i) => (
-                    <div key={i} className="flex items-center gap-4 p-2 rounded-lg hover:bg-muted/50 transition-colors border-b last:border-0 pb-3">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium">New Inquiry Received</p>
-                        <p className="text-xs text-muted-foreground">Order status updated to {q.status}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-xs font-medium">{new Date(q.created_at).toLocaleDateString()}</p>
-                        <p className="text-[10px] uppercase text-muted-foreground">Activity</p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-muted-foreground">Recent quotation requests and product updates will appear here.</p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card className="col-span-1">
-            <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-wrap gap-2">
-              <p className="text-sm text-muted-foreground mb-4 w-full">Fast access to common management tasks.</p>
-              {/* Add quick action buttons */}
-            </CardContent>
-          </Card>
-        </div>
+
       </div>
     </AdminLayout>
   );
