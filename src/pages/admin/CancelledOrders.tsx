@@ -15,13 +15,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -32,15 +25,16 @@ import {
   User,
   Phone,
   MapPin,
-  Check,
   FileText,
   Download,
-  Package
+  Package,
+  Trash2
 } from "lucide-react";
-import { format } from "date-fns";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
-import { getMockQuotations, setMockQuotations } from "@/lib/mockDb";
+import { format } from "date-fns";
+
+import { Quotation, QuotationItem } from "@/types";
 import { 
   exportToCSV, 
   exportToPDF, 
@@ -54,9 +48,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Quotation, QuotationItem } from "@/types";
+import { getMockQuotations } from "@/lib/mockDb";
 
-const Quotations = () => {
+const CancelledOrders = () => {
   const [quotations, setQuotations] = useState<Quotation[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedQuotation, setSelectedQuotation] = useState<Quotation | null>(null);
@@ -65,11 +59,12 @@ const Quotations = () => {
 
   const fetchQuotations = async () => {
     setLoading(true);
-    
+
     if (!import.meta.env.VITE_SUPABASE_URL) {
       const data = await getMockQuotations();
-      const pending = data.filter((q: Quotation) => q.status === 'pending');
-      setQuotations(pending);
+      // Filter only cancelled quotations
+      const cancelled = data.filter((q: Quotation) => q.status === 'cancelled');
+      setQuotations(cancelled);
       setLoading(false);
       return;
     }
@@ -77,11 +72,11 @@ const Quotations = () => {
     const { data, error } = await supabase
       .from('quotations')
       .select('*, items:quotation_items(*, products(name, size, unit))')
-      .eq('status', 'pending')
+      .eq('status', 'cancelled')
       .order('created_at', { ascending: false });
 
     if (error) {
-      toast.error("Failed to fetch quotations");
+      toast.error("Failed to fetch cancelled orders");
     } else {
       setQuotations(data as Quotation[] || []);
     }
@@ -109,50 +104,11 @@ const Quotations = () => {
       .eq('quotation_id', quotation.id);
 
     if (error) {
-      toast.error("Failed to fetch quotation items");
+      toast.error("Failed to fetch order items");
     } else {
       setSelectedQuotation({ ...quotation, items: data as QuotationItem[] || [] });
     }
     setItemsLoading(false);
-  };
-
-  const handleStatusChange = async (id: string, newStatus: string) => {
-    if (!import.meta.env.VITE_SUPABASE_URL) {
-      const data = await getMockQuotations();
-      const updated = data.map((q: Quotation) => q.id === id ? { ...q, status: newStatus } : q);
-      await setMockQuotations(updated);
-      toast.success("Status updated");
-      fetchQuotations();
-      if (selectedQuotation && selectedQuotation.id === id) {
-        setSelectedQuotation({...selectedQuotation, status: newStatus});
-      }
-      return;
-    }
-
-    const { error } = await supabase
-      .from('quotations')
-      .update({ status: newStatus })
-      .eq('id', id);
-
-    if (error) {
-      toast.error("Failed to update status");
-    } else {
-      toast.success("Status updated");
-      fetchQuotations();
-      if (selectedQuotation && selectedQuotation.id === id) {
-        setSelectedQuotation({...selectedQuotation, status: newStatus});
-      }
-    }
-  };
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'pending': return <Badge variant="outline" className="bg-orange-50 text-orange-600 border-orange-200 uppercase text-[10px]">Pending</Badge>;
-      case 'contacted': return <Badge variant="outline" className="bg-blue-50 text-blue-600 border-blue-200 uppercase text-[10px]">Contacted</Badge>;
-      case 'completed': return <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200 uppercase text-[10px]">Completed</Badge>;
-      case 'cancelled': return <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 uppercase text-[10px]">Cancelled</Badge>;
-      default: return <Badge variant="secondary">{status}</Badge>;
-    }
   };
 
   return (
@@ -160,8 +116,8 @@ const Quotations = () => {
       <div className="space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Quotations</h1>
-            <p className="text-muted-foreground mt-1">Review and manage customer bulk order inquiries.</p>
+            <h1 className="text-3xl font-bold tracking-tight">Cancelled Orders</h1>
+            <p className="text-muted-foreground mt-1">Review orders that were cancelled by admin or customer.</p>
           </div>
           
           <DropdownMenu>
@@ -171,10 +127,10 @@ const Quotations = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem onClick={() => exportAllToPDF(quotations, 'All Quotations')} className="gap-2 cursor-pointer">
+              <DropdownMenuItem onClick={() => exportAllToPDF(quotations, 'Cancelled Orders')} className="gap-2 cursor-pointer">
                 <FileText className="w-4 h-4" /> Download as PDF
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => exportAllToCSV(quotations, 'all_quotations')} className="gap-2 cursor-pointer">
+              <DropdownMenuItem onClick={() => exportAllToCSV(quotations, 'cancelled_orders')} className="gap-2 cursor-pointer">
                 <Download className="w-4 h-4" /> Download as CSV
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -185,7 +141,7 @@ const Quotations = () => {
           {loading ? (
             <div className="p-12 flex flex-col items-center justify-center gap-4">
               <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              <p className="text-muted-foreground">Fetching inquiries...</p>
+              <p className="text-muted-foreground">Fetching cancelled orders...</p>
             </div>
           ) : quotations.length > 0 ? (
             <Table>
@@ -206,23 +162,15 @@ const Quotations = () => {
                     </TableCell>
                     <TableCell className="font-medium">{q.customer_name}</TableCell>
                     <TableCell>{q.phone}</TableCell>
-                    <TableCell>{getStatusBadge(q.status)}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 uppercase text-[10px]">
+                        Cancelled
+                      </Badge>
+                    </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        {q.status !== 'completed' && (
-                          <Button 
-                            variant="default" 
-                            size="sm" 
-                            onClick={() => handleStatusChange(q.id, 'completed')} 
-                            className="gap-2 bg-green-600 hover:bg-green-700 text-white"
-                          >
-                            <Check className="w-4 h-4" /> Done
-                          </Button>
-                        )}
-                        <Button variant="outline" size="sm" onClick={() => handleViewDetails(q)} className="gap-2">
-                          <Eye className="w-4 h-4" /> Details
-                        </Button>
-                      </div>
+                      <Button variant="outline" size="sm" onClick={() => handleViewDetails(q)} className="gap-2">
+                        <Eye className="w-4 h-4" /> Details
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -231,10 +179,10 @@ const Quotations = () => {
           ) : (
             <div className="p-12 text-center">
               <div className="bg-muted w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <ClipboardList className="w-8 h-8 text-muted-foreground" />
+                <Trash2 className="w-8 h-8 text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-semibold">No quotations yet</h3>
-              <p className="text-muted-foreground">New customer inquiries will appear here.</p>
+              <h3 className="text-lg font-semibold">No cancelled orders</h3>
+              <p className="text-muted-foreground">Orders marked as 'Cancelled' will appear here.</p>
             </div>
           )}
         </div>
@@ -245,10 +193,10 @@ const Quotations = () => {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ClipboardList className="w-5 h-5 text-primary" />
-              Quotation Details
+              Order Details
             </DialogTitle>
             <DialogDescription className="hidden">
-              View the details of the quotation request and manage its status.
+              View the details of the cancelled order.
             </DialogDescription>
           </DialogHeader>
           
@@ -271,7 +219,9 @@ const Quotations = () => {
                     <span>{format(new Date(selectedQuotation.created_at), 'MMM dd, yyyy')}</span>
                   </div>
                   <div className="flex justify-end">
-                    {getStatusBadge(selectedQuotation.status)}
+                    <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 uppercase text-[10px]">
+                      Cancelled
+                    </Badge>
                   </div>
                 </div>
                 {selectedQuotation.address && (
@@ -295,7 +245,7 @@ const Quotations = () => {
 
               <div className="space-y-4">
                 <h3 className="font-semibold text-sm flex items-center gap-2 border-b pb-2">
-                  <Package className="w-4 h-4" /> Requested Items
+                  <Package className="w-4 h-4" /> Order List
                 </h3>
                 {itemsLoading ? (
                   <div className="py-8 flex justify-center">
@@ -315,28 +265,10 @@ const Quotations = () => {
                       </div>
                     ))}
                     {(!selectedQuotation.items || selectedQuotation.items.length === 0) && (
-                      <p className="text-center text-sm text-muted-foreground py-4">No items in this quotation.</p>
+                      <p className="text-center text-sm text-muted-foreground py-4">No items in this order.</p>
                     )}
                   </div>
                 )}
-              </div>
-
-              <div className="space-y-3 pt-4 border-t">
-                <h4 className="font-medium text-sm">Update Status</h4>
-                <Select 
-                  value={selectedQuotation.status} 
-                  onValueChange={(val) => handleStatusChange(selectedQuotation.id, val)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Change status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="contacted">Contacted</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
-                    <SelectItem value="cancelled">Cancelled</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
 
               <div className="flex flex-col sm:flex-row justify-between gap-4 pt-4 border-t">
@@ -350,9 +282,6 @@ const Quotations = () => {
                 </div>
                 <div className="flex gap-2 justify-end">
                   <Button variant="outline" onClick={() => setIsDetailsOpen(false)}>Close</Button>
-                  <Button className="gap-2" onClick={() => selectedQuotation && window.open(`https://wa.me/${selectedQuotation.phone?.replace(/\D/g, '') || ''}`, '_blank')}>
-                    <Phone className="w-4 h-4" /> Contact via WhatsApp
-                  </Button>
                 </div>
               </div>
             </div>
@@ -363,4 +292,4 @@ const Quotations = () => {
   );
 };
 
-export default Quotations;
+export default CancelledOrders;

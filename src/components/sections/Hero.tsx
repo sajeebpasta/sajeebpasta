@@ -42,7 +42,7 @@ export const Hero = ({ whatsappNumber, title, subtitle }: HeroProps) => {
           <Button size="lg" className="text-base px-8 py-6 font-semibold" onClick={() => document.getElementById("quotation")?.scrollIntoView({ behavior: "smooth" })}>
             বাল্ক কোটেশন নিন
           </Button>
-          <Button size="lg" className="text-base px-8 py-6 font-semibold bg-destructive hover:bg-destructive/90 text-destructive-foreground" asChild>
+          <Button variant="destructive" size="lg" className="text-base px-8 py-6 font-semibold" asChild>
             <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">
               <MessageCircle className="w-5 h-5 mr-2" /> হোয়াটসঅ্যাপে যোগাযোগ
             </a>

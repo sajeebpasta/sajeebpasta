@@ -15,7 +15,7 @@ export const Footer = () => {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
           <img src={logo} alt="Sajeeb Group Logo" className="h-14 object-contain mb-4" />
-          <p className="text-sm opacity-90">প্রিমিয়াম ম্যাকারনি পাস্তা প্রস্তুতকারক ও সরবরাহকারী</p>
+          <p className="text-sm opacity-90">পাইকারি ব্যবসায়ীদের জন্য প্রিমিয়াম ম্যাকারনী ও নুডলস প্রস্তুতকারক ও সরবরাহকারী</p>
         </div>
         <div>
           <h4 className="font-semibold text-lg mb-3">যোগাযোগ</h4>

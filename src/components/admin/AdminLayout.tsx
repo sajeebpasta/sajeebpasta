@@ -10,7 +10,8 @@ import {
   Menu, 
   X,
   ChevronRight,
-  FolderCheck
+  FolderCheck,
+  Trash2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -72,7 +73,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { name: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
     { name: "Products", path: "/admin/products", icon: Package },
     { name: "Quotations", path: "/admin/quotations", icon: ClipboardList },
-    { name: "Project Details", path: "/admin/project-details", icon: FolderCheck },
+    { name: "Fulfill Orders", path: "/admin/project-details", icon: FolderCheck },
+    { name: "Cancelled Orders", path: "/admin/cancelled-orders", icon: Trash2 },
     { name: "Settings", path: "/admin/settings", icon: Settings },
   ];
 

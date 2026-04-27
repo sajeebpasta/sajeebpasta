@@ -61,7 +61,7 @@ const ProjectDetails = () => {
 
     if (!import.meta.env.VITE_SUPABASE_URL) {
       const data = await getMockQuotations();
-      // Filter only completed quotations for Project Details
+      // Filter only completed quotations for Fulfilled Orders
       const completed = data.filter((q: Quotation) => q.status === 'completed');
       setQuotations(completed);
       setLoading(false);
@@ -75,7 +75,7 @@ const ProjectDetails = () => {
       .order('created_at', { ascending: false });
 
     if (error) {
-      toast.error("Failed to fetch project details");
+      toast.error("Failed to fetch fulfilled orders");
     } else {
       setQuotations(data as Quotation[] || []);
     }
@@ -115,7 +115,7 @@ const ProjectDetails = () => {
       <div className="space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Project Details</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Fulfill Orders</h1>
             <p className="text-muted-foreground mt-1">Review all completed orders and client details.</p>
           </div>
           
@@ -126,10 +126,10 @@ const ProjectDetails = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem onClick={() => exportAllToPDF(quotations, 'All Projects')} className="gap-2 cursor-pointer">
+              <DropdownMenuItem onClick={() => exportAllToPDF(quotations, 'All Fulfilled Orders')} className="gap-2 cursor-pointer">
                 <FileText className="w-4 h-4" /> Download as PDF
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => exportAllToCSV(quotations, 'all_projects')} className="gap-2 cursor-pointer">
+              <DropdownMenuItem onClick={() => exportAllToCSV(quotations, 'fulfilled_orders')} className="gap-2 cursor-pointer">
                 <Download className="w-4 h-4" /> Download as CSV
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -140,7 +140,7 @@ const ProjectDetails = () => {
           {loading ? (
             <div className="p-12 flex flex-col items-center justify-center gap-4">
               <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              <p className="text-muted-foreground">Fetching projects...</p>
+              <p className="text-muted-foreground">Fetching fulfilled orders...</p>
             </div>
           ) : quotations.length > 0 ? (
             <Table>
@@ -180,7 +180,7 @@ const ProjectDetails = () => {
               <div className="bg-muted w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <ClipboardList className="w-8 h-8 text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-semibold">No completed projects yet</h3>
+              <h3 className="text-lg font-semibold">No fulfilled orders yet</h3>
               <p className="text-muted-foreground">Orders marked as 'Done' will appear here.</p>
             </div>
           )}
@@ -192,10 +192,10 @@ const ProjectDetails = () => {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ClipboardList className="w-5 h-5 text-primary" />
-              Project Details
+              Order Details
             </DialogTitle>
             <DialogDescription className="hidden">
-              View the details of the completed project order.
+              View the details of the fulfilled order.
             </DialogDescription>
           </DialogHeader>
           
@@ -264,7 +264,7 @@ const ProjectDetails = () => {
                       </div>
                     ))}
                     {(!selectedQuotation.items || selectedQuotation.items.length === 0) && (
-                      <p className="text-center text-sm text-muted-foreground py-4">No items in this project.</p>
+                      <p className="text-center text-sm text-muted-foreground py-4">No items in this order.</p>
                     )}
                   </div>
                 )}
